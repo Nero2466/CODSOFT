@@ -21,13 +21,13 @@ void addNewTask(std::vector<std::string>& taskList, std::vector<bool>& taskStatu
     std::getline(std::cin >> std::ws, description);
     taskList.push_back(description);
     taskStatus.push_back(false);
-    std::cout << "Task added!" << std::endl;
+    std::cout << "Task added!\n";
 }
 
 void displayAllTasks(const std::vector<std::string>& taskList, const std::vector<bool>& taskStatus) {
     std::cout << "\n===== YOUR TO-DO LIST =====" << std::endl;
     if (taskList.empty()) {
-        std::cout << "You have no tasks right now." << std::endl;
+        std::cout << "You have no tasks right now.\n";
     } else {
         for (size_t i = 0; i < taskList.size(); ++i) {
             std::cout << (i + 1) << ". ";
@@ -40,7 +40,7 @@ void displayAllTasks(const std::vector<std::string>& taskList, const std::vector
             std::cout << std::endl;
         }
     }
-    std::cout << "===========================" << std::endl;
+    std::cout << "===========================\n";
 }
 
 void markTaskComplete(std::vector<bool>& taskStatus, int chosenTaskNum) {
@@ -48,9 +48,9 @@ void markTaskComplete(std::vector<bool>& taskStatus, int chosenTaskNum) {
 
     if (actualIndex >= 0 && actualIndex < taskStatus.size()) {
         taskStatus[actualIndex] = true;
-        std::cout << "Task number " << chosenTaskNum << " is now DONE!" << std::endl;
+        std::cout << "Task number " << chosenTaskNum << " is now DONE!\n";
     } else {
-        std::cout << "That task number doesn't exist. Please try again." << std::endl;
+        std::cout << "That task number doesn't exist. Please try again.\n";
     }
 }
 
@@ -60,12 +60,11 @@ void deleteTask(std::vector<std::string>& taskList, std::vector<bool>& taskStatu
     if (actualIndex >= 0 && actualIndex < taskList.size()) {
         taskList.erase(taskList.begin() + actualIndex);
         taskStatus.erase(taskStatus.begin() + actualIndex);
-        std::cout << "Task number " << chosenTaskNum << " has been deleted!" << std::endl;
+        std::cout << "Task number " << chosenTaskNum << " has been deleted!\n";
     } else {
-        std::cout << "That task number doesn't exist. Please try again." << std::endl;
+        std::cout << "That task number doesn't exist. Please try again.\n";
     }
 }
-
 
 int main() {
     std::vector<std::string> myTasks;
@@ -78,6 +77,13 @@ int main() {
         showAppMenu();
         std::cin >> menuOption;
 
+        if (std::cin.fail()) {
+            std::cout << "\nInvalid input! Please enter a number from the menu.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue;
+        }
+
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         switch (menuOption) {
@@ -89,31 +95,45 @@ int main() {
                 break;
             case 3:
                 if (myTasks.empty()) {
-                    std::cout << "\nThere are no tasks to mark yet. Add some first!" << std::endl;
+                    std::cout << "\nThere are no tasks to mark yet. Add some first!\n";
                     break;
                 }
                 displayAllTasks(myTasks, myTaskStatuses);
                 std::cout << "Enter the number of the task you finished: ";
                 std::cin >> selectedTaskNumber;
-                markTaskComplete(myTaskStatuses, selectedTaskNumber);
+
+                if (std::cin.fail()) {
+                    std::cout << "Invalid input. Please enter a valid task number.\n";
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                } else {
+                    markTaskComplete(myTaskStatuses, selectedTaskNumber);
+                }
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 break;
             case 4:
                 if (myTasks.empty()) {
-                    std::cout << "\nNothing to delete. Your list is empty." << std::endl;
+                    std::cout << "\nNothing to delete. Your list is empty.\n";
                     break;
                 }
                 displayAllTasks(myTasks, myTaskStatuses);
                 std::cout << "Enter the number of the task to delete: ";
                 std::cin >> selectedTaskNumber;
-                deleteTask(myTasks, myTaskStatuses, selectedTaskNumber);
+
+                if (std::cin.fail()) {
+                    std::cout << "Invalid input. Please enter a valid task number.\n";
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                } else {
+                    deleteTask(myTasks, myTaskStatuses, selectedTaskNumber);
+                }
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 break;
             case 5:
-                std::cout << "\nClosing the To-Do List. See you Gaurav!" << std::endl;
+                std::cout << "\nClosing the To-Do List. See you Gaurav!\n";
                 break;
             default:
-                std::cout << "\nInvalid choice. Please pick a number from the menu (1-5)." << std::endl;
+                std::cout << "\nInvalid choice. Please pick a number from the menu (1-5).\n";
                 break;
         }
     } while (menuOption != 5);
