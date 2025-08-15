@@ -2,15 +2,13 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build-task-1",
+            "label": "Build C++ and Run",
             "type": "shell",
             "command": "g++",
             "args": [
-                "-fdiagnostics-color=always",
-                "-g",
-                "${workspaceFolder}/TASK-1.cpp",
+                "${file}",
                 "-o",
-                "${workspaceFolder}/TASK-1.exe"
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
             "group": "build",
             "problemMatcher": [
